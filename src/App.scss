@@ -1,0 +1,138 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
+body {
+  /*background-color: $body-bg;*/
+  background-image: url("milkyway.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: white;
+}
+
+h2 {
+  font-family: "Space Age", Arial, sans-serif;
+}
+
+.wrapper {
+  perspective: 1000px;
+  perspective-origin: 500px;
+  margin: 4em auto; 
+  /*width: 37em;*/
+}
+
+.wrapper #inner-left { 
+  transform: rotateY(var(--leftvar)) rotateX(var(--offsetscaledY));
+  margin-left: var(--leftoffset);
+ }
+
+ .wrapper #inner-right { 
+  transform: rotateY(var(--rightvar)) rotateX(var(--offsetscaledY));
+  margin-right: var(--rightoffset);
+ }
+
+
+.table-dark {
+  background-color: rgba(52, 58, 64, 0.5);
+}
+.App {
+  text-align: center;
+  
+  font-size: 12px;
+  
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.react-bootstrap-table table { table-layout: auto !important; }
+
+span.search {
+  border-radius: 3px;
+  background-color: #af2323;
+}
+
+span.matched-search {
+  background-color: blue;
+}
+
+.list-label {
+  width: 160px;
+  text-align: right;
+}
+
+button {
+  margin: 5px;
+}
+
+.table-active {
+  /*background-color: rgb(175, 35, 35) !important;*/
+  background-color: rgba(175, 35, 35, 0.5) !important;
+}
+#stars-table tbody tr {
+  cursor: pointer;
+}
+
+.temperature-pill {
+
+  background-color: rgba(255, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: bold;
+
+}
+
+
+#star {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 240, 232, 0.9);
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+}
+
+
+#planets {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+.planet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: silver;
+  animation: circle 6s infinite linear;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+
+@keyframes circle { to { transform: rotate(1turn); } }
+
