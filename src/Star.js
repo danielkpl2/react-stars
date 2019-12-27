@@ -15,7 +15,7 @@ class Star extends Component {
         <div className="wrapper" style={{display: "inline-block"}}>
           <div className="inner-right" id="inner-right">
             <h2 style={{textAlign: "right"}}>{currentStar.props.name}</h2>
-            <Table striped bordered hover variant="dark" style={{width: "500px", float: "right"}}>
+            <Table striped bordered hover variant="dark" style={{width: "400px", float: "right"}}>
               
               <tbody>
                 
