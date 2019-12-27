@@ -1,64 +1,44 @@
 async function getStars(result){
-	//console.log("NO STARS!");
 	var promises = [];
-	result.prop("alternateNames").forEach((value, key) => {
+	result.prop("alternateNames").forEach((value) => {
       promises.push(value.link("star").fetch());
     })
 
     return await Promise.all(promises).then( async stars => {
-      //console.log(stars);
       stars.forEach((star, index) => {
-        //I'm changing the star's name to the search result name so that there are no duplicate names for the same star
-        // stars[index].props.name = "matched name: " + result.prop("alternateNames")[index].prop("name") + ", canonical name: " + star.props.name; 
         stars[index].props.matchedName = result.prop("alternateNames")[index].prop("name");
       })
-      // return new Promise((resolve, reject) => {
-      	
-      // });
       return stars;
-      //stars = values;
       
-    }).then( async (values, index) => {
-      var proms = [];
-      values.forEach((value, i) => {
-        proms.push(value.link("additionalNames").fetch());
+    }).then( async stars => {
+      var promises = [];
+      stars.forEach(star => {
+        promises.push(star.link("additionalNames").fetch());
       })
 
-       return await Promise.all(proms).then(namesArray => {
-        namesArray.forEach((names, namesIndex) => {
-          var namesToAdd = [];
-          //additionalNames = [];
-          names.prop("alternateNames").forEach(name => {
-            //console.log(name.prop("name"));  
-            namesToAdd.push(name.prop("name"));
-          })
-          //console.log(namesToAdd);
-          values[namesIndex].props.additionalNames = namesToAdd;
-
-        })
-        return values;
-
-      })
-      })
+	    return await Promise.all(promises).then(namesArray => {
+	      namesArray.forEach((names, namesIndex) => {
+	        var namesToAdd = [];
+	        names.prop("alternateNames").forEach(name => { 
+	          namesToAdd.push(name.prop("name"));
+	        })
+	        stars[namesIndex].props.additionalNames = namesToAdd;
+	      })
+	      return stars;
+	    })
+    })
 
 }
 
 async function getAdditionalNames(link){
 	var aditionalNamesResource = await link.fetch();
-	//console.log(aditionalNamesResource);
 	var namesToAdd = [];
 
-          
-          //additionalNames = [];
-          aditionalNamesResource.prop("alternateNames").forEach(name => {
-            //console.log(name.prop("name"));  
-            namesToAdd.push(name.prop("name"));
-          })
-          //console.log(namesToAdd);
+  aditionalNamesResource.prop("alternateNames").forEach(name => {
+    namesToAdd.push(name.prop("name"));
+  })
 
-
-		return namesToAdd;
-
+	return namesToAdd;
 }
 
 function tempToRGB(temp, alpha) {
@@ -71,10 +51,9 @@ function tempToRGB(temp, alpha) {
       return "rgba("+red+","+green+","+blue+"," + alpha + ")";
     }
 
-module.exports = {
-	getStars: getStars,
-	getAdditionalNames: getAdditionalNames,
-	tempToRGB: tempToRGB
-}
-
-//export default getStars;
+export { getAdditionalNames, tempToRGB, getStars };
+// module.exports = {
+// 	getStars,
+// 	getAdditionalNames,
+// 	tempToRGB
+// }

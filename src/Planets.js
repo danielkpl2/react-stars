@@ -6,33 +6,34 @@ import { tempToRGB } from './Util.js';
 class Planets extends Component {
 
 	render(){
+		const { planets } = this.props.context.state;
 		return(
 		<div>
-		{this.props.context.state.planets ? (
+		{planets ? (
 			<div>
 			<h2 style={{"textAlign": "right"}}>Planets</h2>
-      <Table striped bordered hover variant="dark" style={{width: "800px"}}>
+      <Table id="planets-table" striped bordered hover variant="dark" style={{width: "866px"}}>
 	      <thead><tr>
-	      	<th>Name</th>
-	      	<th>Radius (km)</th>
-	      	<th>Age</th>
-	      	<th>Temperature (kelvin)</th>
-	      	<th>Mass (Jupyter masses)</th>
-	      	<th>Discovery Method</th>
-	      	<th>Description</th>
-	      	<th style={{width: "90px"}}>Discovery Date</th>
+	      	<th className="width100">Name</th>
+	      	<th className="width75">Radius (km)</th>
+	      	<th className="width50">Age</th>
+	      	<th className="width100">Temperature (kelvin)</th>
+	      	<th className="width75">Mass (Jupyter masses)</th>
+	      	<th className="width75">Discovery Method</th>
+	      	<th className="width275">Description</th>
+	      	<th className="width116">Discovery Date</th>
 	      	</tr></thead>
 	      	<tbody>
-			      {this.props.context.state.planets.map((planet, key) => 
+			      {planets.map((planet, key) => 
 		          <tr key={key}>
-		            <td>{planet.prop("name")}</td>
-		            <td>{planet.prop("radius") ? (parseFloat(planet.prop("radius")) * 69911).toFixed(2) : "unknown"}</td>
-		            <td>{planet.prop("age") ? planet.prop("age") : ''}</td>
-		            <td style={{backgroundColor: tempToRGB(planet.prop("temperature"), 0.5)}}>{planet.prop("temperature") ? <span className="temperature-pill">{planet.prop("temperature")}</span> : "unknown"}</td>
-		            <td>{planet.prop("mass") ? parseFloat(planet.prop("mass")).toFixed(4) : "unknown"}</td>
-		            <td>{planet.prop("discoveryMethod")}</td>
-		            <td>{planet.prop("description")}</td>
-		            <td>{moment(planet.prop("discoveryDate")).format("YYYY-MM-DD")}</td>
+		            <td className="width100">{planet.prop("name") || "?"}</td>
+		            <td className="width75">{planet.prop("radius") ? (parseFloat(planet.prop("radius")) * 69911).toFixed(2) : "?"}</td>
+		            <td className="width50">{planet.prop("age") || '?'}</td>
+		            <td className="width100" style={{backgroundColor: tempToRGB(planet.prop("temperature"), 0.5)}}>{planet.prop("temperature") ? <span className="temperature-pill">{planet.prop("temperature")}</span> : "unknown"}</td>
+		            <td className="width75">{planet.prop("mass") ? parseFloat(planet.prop("mass")).toFixed(4) : "?"}</td>
+		            <td className="width75">{planet.prop("discoveryMethod") || "?" }</td>
+		            <td className="width275">{planet.prop("description") || "?"}</td>
+		            <td className="width100">{moment(planet.prop("discoveryDate")).format("YYYY-MM-DD")}</td>
 		          </tr>
 			        
 			      )}

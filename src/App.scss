@@ -6,17 +6,29 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: white;
+  overflow: hidden;
+}
+
+.loading {
+  background-image: url("milkyway.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: "fixed";
+  width: "100%";
+  height: "100%";
+  z-index: "99";
 }
 
 h2 {
   font-family: "Space Age", Arial, sans-serif;
 }
 
+ /*perspective animation */
+
 .wrapper {
   perspective: 1000px;
   perspective-origin: 500px;
   margin: 4em auto; 
-  /*width: 37em;*/
 }
 
 .wrapper #inner-left { 
@@ -40,31 +52,85 @@ h2 {
   
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#stars-table tbody, #stars-table thead tr, #stars-table tbody tr,  #planets-table tbody, #planets-table tbody tr, #planets-table thead tr { display: block; }
+#stars-table thead tr, #stars-table tbody tr, #planets-table thead tr, #planets-table tbody tr {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+#planets-table thead th, #planets-table tbody td {
+    /*flex: 1;*/
+    text-align: center;
+    top:50%;
 }
 
-.App-link {
-  color: #61dafb;
+#stars-table tbody {
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
+
+#planets-table tbody {
+  max-height: 40vh;
+  overflow-y: auto;
+  overflow-x: hidden; 
+}
+.width300 {
+  width: 300px;
+  padding: 0px;
+  display: inline-block;
+}
+.width275 {
+  width: 275px;
+  padding: 0px;
+  display: inline-block;
+}
+
+.width175 {
+  width: 175px;
+  padding: 0px;
+  display: inline-block;
+}
+.width150 {
+  width: 150px;
+  padding: 0px;
+  display: inline-block;
+}
+.width141 {
+  width: 141px;
+  padding: 0px;
+  display: inline-block;
+}
+.width125 {
+  width: 125px;
+  padding: 0px;
+  display: inline-block;
+}
+.width116 {
+  width: 116px;
+  padding: 0px;
+  display: inline-block;
+}
+.width100 {
+  width: 100px;
+  padding: 0px;
+  display: inline-block;
+}
+.width91 {
+  width: 91px;
+  padding: 0px;
+  display: inline-block;
+}
+.width75 {
+  width: 75px;
+  padding: 0px;
+  display: inline-block;
+}
+.width50 {
+  width: 50px;
+  padding: 0px;
+  display: inline-block;
+}
+
+
 .react-bootstrap-table table { table-layout: auto !important; }
 
 span.search {
@@ -85,8 +151,16 @@ button {
   margin: 5px;
 }
 
+.btn-success {
+  background-color: rgba(40, 167, 69, 0.5);
+  border: none;
+}
+.btn-primary {
+  background-color: rgba(0, 123, 255, 0.5);
+  border: none;
+}
+
 .table-active {
-  /*background-color: rgb(175, 35, 35) !important;*/
   background-color: rgba(175, 35, 35, 0.5) !important;
 }
 #stars-table tbody tr {
@@ -94,12 +168,10 @@ button {
 }
 
 .temperature-pill {
-
   background-color: rgba(255, 0, 0, 0.5);
   padding: 5px;
   border-radius: 4px;
   font-weight: bold;
-
 }
 
 
@@ -114,7 +186,6 @@ button {
   margin-top: -50px;
   margin-left: -50px;
 }
-
 
 #planets {
   position: fixed;
@@ -132,6 +203,15 @@ button {
   top: 50%;
   left: 50%;
 }
+
+.video-wrapper {
+  position: fixed;
+  z-index: -99;
+  width: 100%;
+  height: 100%;
+  /*display: none;*/
+}
+
 
 
 @keyframes circle { to { transform: rotate(1turn); } }

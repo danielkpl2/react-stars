@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import { getStars } from './Util.js';
+import { getStars, getAdditionalNames } from './Util.js';
 
 class Buttons extends Component {
 	constructor(props){
@@ -23,9 +23,11 @@ class Buttons extends Component {
 		//console.log("handle button stars");
 		console.log(result);
 		const planets = await stars[0].link("planets").fetch();
+		const names = await getAdditionalNames(stars[0].link("additionalNames"));
 		this.props.context.setState({
 			starResource: result,
 			stars: stars,
+			names: names,
 			currentStar: stars[0],
 			currentStarIndex: 0,
 			planets: planets.prop("planets"),
@@ -45,9 +47,11 @@ class Buttons extends Component {
 					<Button disabled={this.props.context.state.prev == null ? true: false} type="button" onClick={() => this.handleButton("prev")}>Previous</Button>
 					<Button disabled={this.props.context.state.next == null ? true: false} type="button" onClick={() => this.handleButton("next")}>Next</Button>
 					<Button disabled={this.props.context.state.last == null ? true: false} type="button" onClick={() => this.handleButton("last")}>Last</Button>
-					<span style={{marginRight: "5px"}}>Found: {this.props.context.state.starResource.prop("page").totalElements}</span>
-					<span style={{marginRight: "5px"}}>Page: {parseInt(this.props.context.state.starResource.prop("page").number)+1}</span>
-					<span>Limit: {this.props.context.state.starResource.prop("page").size}</span>
+					<div style={{textAlign: "center", display: "inline-block", fontWeight: "bold"}}>
+						<span style={{margin: "5px"}}>Found: {this.props.context.state.starResource.prop("page").totalElements}</span>
+						<span style={{margin: "5px"}}>Page: {parseInt(this.props.context.state.starResource.prop("page").number)+1}</span>
+						<span style={{margin: "5px"}}>Limit: {this.props.context.state.starResource.prop("page").size}</span>
+					</div>
 				</div>
 				) : ''
 			}

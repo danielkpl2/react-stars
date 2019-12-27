@@ -4,8 +4,11 @@ import './App.scss';
 import Starlist from './Starlist.js';
 import Star from './Star.js';
 import Orbits from './Orbits.js';
+import spinner from './spinner.gif';
+import { Button } from 'react-bootstrap';
 
 import { getStars, getAdditionalNames } from './Util.js';
+import YouTube from 'react-youtube';
 
 class App extends Component {
 
@@ -21,7 +24,6 @@ class App extends Component {
       planets: null,
       planetHeadings: [],
       search: "",
-      searchPlanets: "",
       searchDistance: "",
       searchBy: "name",
       next: null,
@@ -29,7 +31,11 @@ class App extends Component {
       first: null,
       last: null,
       names: "",
-      error: ""
+      error: "",
+      ready: false,
+      // ready: true,
+      yt: null,
+      mute: false
 
     }
     //this.stars_uri = "http://webdevelopertest.playfusionservices.com/webapptest/stars?page=0&size=20";
@@ -39,11 +45,12 @@ class App extends Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearchByName = this.handleSearchByName.bind(this);
     this.handleSearchByPlanetCount = this.handleSearchByPlanetCount.bind(this);
-    this.handleSearchPlanetsChange = this.handleSearchPlanetsChange.bind(this);
-    this.handleSearchDistanceChange = this.handleSearchDistanceChange.bind(this);
     this.handleSearchByDistance = this.handleSearchByDistance.bind(this);
     this.hangleSearchOptionChange = this.hangleSearchOptionChange.bind(this);
     this.handleSearchBy = this.handleSearchBy.bind(this);
+    this._onPlay = this._onPlay.bind(this);
+    this._onReady = this._onReady.bind(this);
+    this.mute = this.mute.bind(this);
     
   }
 
@@ -88,24 +95,13 @@ class App extends Component {
     })
   }
 
-  handleSearchPlanetsChange(event){
-    this.setState({
-      searchPlanets: event.target.value
-    })
-  }
-
-  handleSearchDistanceChange(event){
-    this.setState({
-      searchDistance: event.target.value
-    })
-  }
-
   async handleSearchByName(){
     try {
       const searchResource = await this.client.fetchResource("alternateNames/search");
       const result = await searchResource.link("findByNameLike").fetch({name: '%' + this.state.search + '%'});
       const stars = await getStars(result);
-      const names = await getAdditionalNames(stars[0].link("additionalNames"));
+      const names = stars[0].props.additionalNames;
+      //const names = await getAdditionalNames(stars[0].link("additionalNames"));
       const planets = await stars[0].link("planets").fetch();
 
       this.setState({
@@ -117,10 +113,9 @@ class App extends Component {
           prev: result.link("prev"),
           first: result.link("first"),
           last: result.link("last"),
-          searchPlanets: "",
-          searchDistance: "",
           names: names,
-          planets: planets.prop("planets")
+          planets: planets.prop("planets"),
+          //searchResult: true
 
         })
     } catch {
@@ -153,7 +148,6 @@ class App extends Component {
           first: result.link("first"),
           last: result.link("last"),
           search: "",
-          searchDistance: "",
           names: names,
           planets: planets.prop("planets")
 
@@ -188,7 +182,6 @@ class App extends Component {
           first: result.link("first"),
           last: result.link("last"),
           search: "",
-          searchPlanets: "",
           names: names,
           planets: planets.prop("planets")
 
@@ -223,6 +216,7 @@ class App extends Component {
         headings: headings,
         originalHeadings: originalHeadings,
         currentStar: firstStar,
+        currentStarIndex: 0,
         planets: planets.prop("planets"),
         planetHeadings: planetHeadings,
         next: starResource.link("next"),
@@ -232,12 +226,15 @@ class App extends Component {
         names: names,
         error: "",
         search: "",
-        searchBy: "name"
+        searchBy: "name",
 
 
       })
     } catch {
       console.log("Error at start up");
+      this.setState({
+          error: "Error at start up"
+        })
     }
   }
 
@@ -250,7 +247,7 @@ class App extends Component {
       var offsetX = 25;
       var offsetY = 5;
 
-      var width = document.body.clientWidth;
+      var width = document.documentElement.clientWidth;
       var height = document.documentElement.clientHeight;
       var halfWidth = width / 2;
       var halfHeight = height / 2;
@@ -271,7 +268,7 @@ class App extends Component {
       document.documentElement.style.setProperty('--rightvar', rightvar+"deg");
       document.documentElement.style.setProperty('--leftoffset', leftvar+"px");
       document.documentElement.style.setProperty('--rightoffset', rightvar+"px");
-      document.documentElement.style.setProperty('--offsetscaledY', offsetscaledY+"deg");
+      document.documentElement.style.setProperty('--offsetscaledY', -offsetscaledY+"deg");
 
 
 
@@ -283,23 +280,83 @@ class App extends Component {
 
   }
 
-  render(){
+  _onReady(event) {
+    // access to player in all event handlers via event.target
+    //event.target.pauseVideo();
+    event.target.setVolume(50);
+    this.setState({yt: event.target})
+    console.log(event.target);
+  }
+  _onPlay(event) {
+    // access to player in all event handlers via event.target
+    //event.target.pauseVideo();
+    //event.target.setVolume(50);
+    console.log("playing");
+    this.setState({ready: true});
+  }
 
+  mute(){
+    if(this.state.mute){
+      this.state.yt.unMute();
+      this.setState({mute: false});
+    } else {
+      this.state.yt.mute();
+      this.setState({mute: true});
+    }
+    
+  }
+
+  render(){
+    const opts = {
+      height: '100%',
+      width: '100%',
+      playerVars: { // https://developers.google.com/youtube/player_parameters
+        autoplay: 1,
+        origin: "localhost:3000",
+        controls: 0,
+        showinfo: 0,
+        autohide: 1,
+        modestbranding: 1
+      },
+
+    }
     return (
-    <div className="App container-fluid">
+    <div>
+    <div style={{display: this.state.ready ? "block" : "none"}}>
+      <Button style={{position: "fixed", top: "5px", right: "5px", zIndex: "99"}} onClick={this.mute}>{this.state.mute ? "Unmute" : "Mute"}</Button>
+      <YouTube
+        videoId="bZNFRIwlQxQ"
+        opts={opts}
+        onReady={this._onReady} 
+        onPlay={this._onPlay}
+        className="video-wrapper"
+
+
+      />
+    </div>
+    <div>
+    {this.state.ready ? (
+      <div className="App container-fluid">
       <div className="row">
-        <div className="col-sm" style={{"padding": "60px"}}>
+        <div className="col-sm" style={{"padding": "60px", paddingTop: "0px"}}>
           <Starlist context={this} />
         </div>
-        <div className="col-sm" style={{"padding": "60px", "textAlign": "left"}}>
+        <div className="col-sm" style={{"padding": "60px", paddingTop: "0px", "textAlign": "left"}}>
           <Star context={this} />
         </div>
       </div>
 
       <Orbits context={this} />
-
+      </div>
+      ) : (
+      <div className="loading"><img style={{left: "50%", top: "50%", position: "absolute", marginLeft: "-50px", marginTop: "-50px"}} alt='' src={spinner} height="100" width="100" /></div>
       
+      )}
+
     </div>
+    </div>
+      
+    
   );
   }
   
