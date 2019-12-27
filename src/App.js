@@ -35,7 +35,9 @@ class App extends Component {
       ready: false,
       // ready: true,
       yt: null,
-      mute: false
+      mute: false,
+      fullScreen: false,
+      noVideo: false
 
     }
     //this.stars_uri = "http://webdevelopertest.playfusionservices.com/webapptest/stars?page=0&size=20";
@@ -51,6 +53,8 @@ class App extends Component {
     this._onPlay = this._onPlay.bind(this);
     this._onReady = this._onReady.bind(this);
     this.mute = this.mute.bind(this);
+    this.fullScreen = this.fullScreen.bind(this);
+    this.noVideo = this.noVideo.bind(this);
     
   }
 
@@ -306,6 +310,45 @@ class App extends Component {
     
   }
 
+  fullScreen(){
+    const elem = document.documentElement;
+    // console.log(elem);
+    if(this.state.fullScreen) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+      }
+      this.setState({fullScreen: false});
+    } else {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }  
+      this.setState({fullScreen: true});
+    }
+    
+  }
+
+  noVideo(){
+    if(this.state.noVideo){
+      this.setState({noVideo: false});
+    } else {
+      this.setState({noVideo: true, ready: true});
+    }
+  }
+
+
+
   render(){
     const opts = {
       height: '100%',
@@ -316,23 +359,31 @@ class App extends Component {
         controls: 0,
         showinfo: 0,
         autohide: 1,
-        modestbranding: 1
+        modestbranding: 1,
+        loop: 1
       },
 
     }
     return (
     <div>
     <div style={{display: this.state.ready ? "block" : "none"}}>
-      <Button style={{position: "fixed", top: "5px", right: "5px", zIndex: "99"}} onClick={this.mute}>{this.state.mute ? "Unmute" : "Mute"}</Button>
-      <YouTube
-        videoId="bZNFRIwlQxQ"
-        opts={opts}
-        onReady={this._onReady} 
-        onPlay={this._onPlay}
-        className="video-wrapper"
+      <div style={{position: "fixed", top: "5px", right: "5px", zIndex: "99"}}>
+        <Button onClick={this.noVideo}>No video</Button>
+        <Button onClick={this.mute}>{this.state.mute ? "Unmute" : "Mute"}</Button>
+        <Button onClick={this.fullScreen}>Full Screen</Button>
+      </div>
+      {this.state.noVideo ? '' : (
+          <YouTube
+            videoId="bZNFRIwlQxQ"
+            opts={opts}
+            onReady={this._onReady} 
+            onPlay={this._onPlay}
+            className="video-wrapper"
 
 
-      />
+          />
+        ) }
+      
     </div>
     <div>
     {this.state.ready ? (
@@ -349,7 +400,9 @@ class App extends Component {
       <Orbits context={this} />
       </div>
       ) : (
-      <div className="loading"><img style={{left: "50%", top: "50%", position: "absolute", marginLeft: "-50px", marginTop: "-50px"}} alt='' src={spinner} height="100" width="100" /></div>
+      <div className="loading">
+        <img style={{left: "50%", top: "50%", position: "absolute", marginLeft: "-50px", marginTop: "-50px"}} alt='' src={spinner} height="100" width="100" />
+        <Button style={{left: "50%", top: "55%", position: "absolute", marginLeft: "-44px"}} onClick={this.noVideo}>No video</Button></div>
       
       )}
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Badge, Button } from 'react-bootstrap';
+import { Table, Badge } from 'react-bootstrap';
 import Search from './Search.js';
 import Buttons from './Buttons.js';
 import spinner from './spinner.gif';
@@ -7,7 +7,7 @@ import spinner from './spinner.gif';
 class Starlist extends Component {
 
 	render(){
-		const { stars, currentStarIndex, headings, mute} = this.props.context.state;
+		const { stars, currentStarIndex} = this.props.context.state;
 		// const columnWidth = typeof stars[0] !== 'undefined' && stars[0].props.additionalNames ? 100 : 125;
 		return(
 			<div>
