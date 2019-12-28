@@ -37,7 +37,8 @@ class App extends Component {
       yt: null,
       mute: false,
       fullScreen: false,
-      noVideo: false
+      noVideo: false,
+      loadingSearch: false
 
     }
     //this.stars_uri = "http://webdevelopertest.playfusionservices.com/webapptest/stars?page=0&size=20";
@@ -55,6 +56,7 @@ class App extends Component {
     this.mute = this.mute.bind(this);
     this.fullScreen = this.fullScreen.bind(this);
     this.noVideo = this.noVideo.bind(this);
+    this.onFullScreenChange = this.onFullScreenChange.bind(this);
     
   }
 
@@ -76,19 +78,27 @@ class App extends Component {
   }
 
   async handleStarClick(key){
-    try{
-      const planets = await this.state.stars[key].link("planets").fetch();
-      const names = await getAdditionalNames(this.state.stars[key].link("additionalNames"));
-      //console.log(names);
-      this.setState({
-        currentStar: this.state.stars[key],
-        currentStarIndex: key,
-        planets: planets.prop("planets"),
-        names: names
-      })
-    } catch {
-      console.log("Error in hangle star click");
-    }
+    this.setState({loadingSearch: true}, async () => {
+      try{
+        const planets = await this.state.stars[key].link("planets").fetch();
+        const names = await getAdditionalNames(this.state.stars[key].link("additionalNames"));
+        //console.log(names);
+        this.setState({
+          currentStar: this.state.stars[key],
+          currentStarIndex: key,
+          planets: planets.prop("planets"),
+          names: names,
+          loadingSearch: false
+        })
+      } catch {
+        console.log("Error in hangle star click");
+        this.setState({
+          error: "Error in hangle star click",
+          loadingSearch: false
+        })
+      }
+    });
+    
     
   }
 
@@ -100,7 +110,8 @@ class App extends Component {
   }
 
   async handleSearchByName(){
-    try {
+    this.setState({loadingSearch: true}, async () => {
+      try {
       const searchResource = await this.client.fetchResource("alternateNames/search");
       const result = await searchResource.link("findByNameLike").fetch({name: '%' + this.state.search + '%'});
       const stars = await getStars(result);
@@ -119,21 +130,26 @@ class App extends Component {
           last: result.link("last"),
           names: names,
           planets: planets.prop("planets"),
+          loadingSearch: false
           //searchResult: true
 
         })
-    } catch {
-      console.log("Error in search by name");
-      this.setState({
-        error: "Error in search by name"
-      })
-    }
+      } catch {
+        console.log("Error in search by name");
+        this.setState({
+          error: "Error in search by name",
+          loadingSearch: false
+        })
+      }
+    });
+
     
 
   }
 
   async handleSearchByPlanetCount(){
-    try{
+    this.setState({loadingSearch: true}, async () => {
+      try{
         const searchResource = await this.client.fetchResource("stars/search");
 
         const result = await searchResource.link("findByNumberOfPlanetsGreaterThan").fetch({numberOfPlanets: this.state.search, page: 0, size: 20, sort: "numberOfPlanets,asc"});
@@ -153,15 +169,19 @@ class App extends Component {
           last: result.link("last"),
           search: "",
           names: names,
-          planets: planets.prop("planets")
+          planets: planets.prop("planets"),
+          loadingSearch: false
 
         })
       } catch {
         console.log("Error in search by planet count");
         this.setState({
-          error: "Error in search by planet count"
+          error: "Error in search by planet count",
+          loadingSearch: false
         })
       }
+    });
+    
     
 
     
@@ -169,77 +189,88 @@ class App extends Component {
   }
 
   async handleSearchByDistance(){
-    try{
-      const searchResource = await this.client.fetchResource("stars/search");
-      const result = await searchResource.link("findByDistanceLessThanEqualOrderByDistance").fetch({distance: this.state.search, page: 0, size: 20});
-      const stars = result.prop("stars");
-      const names = await getAdditionalNames(stars[0].link("additionalNames"));
-      const planets = await stars[0].link("planets").fetch();
+    this.setState({loadingSearch: true}, async () => {
+      try{
+        const searchResource = await this.client.fetchResource("stars/search");
+        const result = await searchResource.link("findByDistanceLessThanEqualOrderByDistance").fetch({distance: this.state.search, page: 0, size: 20});
+        const stars = result.prop("stars");
+        const names = await getAdditionalNames(stars[0].link("additionalNames"));
+        const planets = await stars[0].link("planets").fetch();
 
-      this.setState({
-          starResource: result,
-          stars: stars,
-          currentStar: stars[0],
-          currentStarIndex: 0,
-          next: result.link("next"),
-          prev: result.link("prev"),
-          first: result.link("first"),
-          last: result.link("last"),
-          search: "",
-          names: names,
-          planets: planets.prop("planets")
+        this.setState({
+            starResource: result,
+            stars: stars,
+            currentStar: stars[0],
+            currentStarIndex: 0,
+            next: result.link("next"),
+            prev: result.link("prev"),
+            first: result.link("first"),
+            last: result.link("last"),
+            search: "",
+            names: names,
+            planets: planets.prop("planets"),
+            loadingSearch: false
 
 
-        })
-    } catch {
-      console.log("Error in search by distance");
-      this.setState({
-          error: "Error in search by distance"
-        })
-    }
+          })
+      } catch {
+        console.log("Error in search by distance");
+        this.setState({
+            error: "Error in search by distance",
+            loadingSearch: false
+
+          })
+      }
+    });
+    
     
   }
 
   async reset(){
-    try {
-      this.client = createClient("http://webdevelopertest.playfusionservices.com/webapptest", {"headers": {"Access-Control-Allow-Origin": "*"}});
-    
-      const starResource  = await this.client.fetchResource("/stars?page=0&size=20&sort=numberOfPlanets,desc");
-      const firstStar = starResource.prop("stars")[0];
-      const planets = await firstStar.link("planets").fetch();
-      const names = await getAdditionalNames(firstStar.link("additionalNames"));
-
-      const stars = starResource.prop("stars");
+    this.setState({loadingSearch: true}, async () => {
+      try {
+        this.client = createClient("http://webdevelopertest.playfusionservices.com/webapptest", {"headers": {"Access-Control-Allow-Origin": "*"}});
       
-      const originalHeadings = Object.keys(starResource.prop("stars")[0].props);
-      const planetHeadings = Object.keys(planets.prop("planets")[0].props);
-      const headings = ["name", "distance", "radius", "numberOfPlanets"];
-      this.setState({
-        starResource: starResource,
-        stars: stars,
-        headings: headings,
-        originalHeadings: originalHeadings,
-        currentStar: firstStar,
-        currentStarIndex: 0,
-        planets: planets.prop("planets"),
-        planetHeadings: planetHeadings,
-        next: starResource.link("next"),
-        prev: starResource.link("prev"),
-        first: starResource.link("first"),
-        last: starResource.link("last"),
-        names: names,
-        error: "",
-        search: "",
-        searchBy: "name",
+        const starResource  = await this.client.fetchResource("/stars?page=0&size=20&sort=numberOfPlanets,desc");
+        const firstStar = starResource.prop("stars")[0];
+        const planets = await firstStar.link("planets").fetch();
+        const names = await getAdditionalNames(firstStar.link("additionalNames"));
+
+        const stars = starResource.prop("stars");
+        
+        const originalHeadings = Object.keys(starResource.prop("stars")[0].props);
+        const planetHeadings = Object.keys(planets.prop("planets")[0].props);
+        const headings = ["name", "distance", "radius", "numberOfPlanets"];
+        this.setState({
+          starResource: starResource,
+          stars: stars,
+          headings: headings,
+          originalHeadings: originalHeadings,
+          currentStar: firstStar,
+          currentStarIndex: 0,
+          planets: planets.prop("planets"),
+          planetHeadings: planetHeadings,
+          next: starResource.link("next"),
+          prev: starResource.link("prev"),
+          first: starResource.link("first"),
+          last: starResource.link("last"),
+          names: names,
+          error: "",
+          search: "",
+          searchBy: "name",
+          loadingSearch: false
 
 
-      })
-    } catch {
-      console.log("Error at start up");
-      this.setState({
-          error: "Error at start up"
         })
-    }
+      } catch {
+        console.log("Error at start up");
+        this.setState({
+            error: "Error at start up",
+            loadingSearch: false
+          })
+      }
+    });
+    
   }
 
   async componentDidMount(){
@@ -274,28 +305,31 @@ class App extends Component {
       document.documentElement.style.setProperty('--rightoffset', rightvar+"px");
       document.documentElement.style.setProperty('--offsetscaledY', -offsetscaledY+"deg");
 
-
-
     });
 
+    document.addEventListener("fullscreenchange", this.onFullScreenChange, false);
+    document.addEventListener("webkitfullscreenchange", this.onFullScreenChange, false);
+    document.addEventListener("mozfullscreenchange", this.onFullScreenChange, false);
+
     this.reset();
+  }
 
-    
+  onFullScreenChange() {
+    var fullscreenElement = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
 
+    // if in fullscreen mode fullscreenElement won't be null
+    if(fullscreenElement) {
+      this.setState({fullScreen: true});
+    } else {
+      this.setState({fullScreen: false});
+    }
   }
 
   _onReady(event) {
-    // access to player in all event handlers via event.target
-    //event.target.pauseVideo();
-    event.target.setVolume(50);
+    event.target.setVolume(10);
     this.setState({yt: event.target})
-    console.log(event.target);
   }
   _onPlay(event) {
-    // access to player in all event handlers via event.target
-    //event.target.pauseVideo();
-    //event.target.setVolume(50);
-    console.log("playing");
     this.setState({ready: true});
   }
 
@@ -323,7 +357,7 @@ class App extends Component {
       } else if (document.msExitFullscreen) { /* IE/Edge */
         document.msExitFullscreen();
       }
-      this.setState({fullScreen: false});
+      // this.setState({fullScreen: false});
     } else {
       if (elem.requestFullscreen) {
         elem.requestFullscreen();
@@ -334,7 +368,7 @@ class App extends Component {
       } else if (elem.msRequestFullscreen) { /* IE/Edge */
         elem.msRequestFullscreen();
       }  
-      this.setState({fullScreen: true});
+      // this.setState({fullScreen: true});
     }
     
   }
@@ -346,8 +380,6 @@ class App extends Component {
       this.setState({noVideo: true, ready: true});
     }
   }
-
-
 
   render(){
     const opts = {

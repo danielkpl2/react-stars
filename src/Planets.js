@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import moment from 'moment';
-import { tempToRGB } from './Util.js';
+import { tempToRGB, HoverSound } from './Util.js';
 
 class Planets extends Component {
+
+	onMouseEnter(event){
+		event.currentTarget.lastChild.firstElementChild.play().then(() => {
+
+		}).catch(error => {
+			
+		});
+
+	}
 
 	render(){
 		const { planets } = this.props.context.state;
@@ -25,7 +34,7 @@ class Planets extends Component {
 	      	</tr></thead>
 	      	<tbody>
 			      {planets.map((planet, key) => 
-		          <tr key={key}>
+		          <tr onMouseEnter={this.onMouseEnter} key={key}>
 		            <td className="width100">{planet.prop("name") || "?"}</td>
 		            <td className="width75">{planet.prop("radius") ? (parseFloat(planet.prop("radius")) * 69911).toFixed(2) : "?"}</td>
 		            <td className="width50">{planet.prop("age") || '?'}</td>
@@ -34,6 +43,7 @@ class Planets extends Component {
 		            <td className="width75">{planet.prop("discoveryMethod") || "?" }</td>
 		            <td className="width275">{planet.prop("description") || "?"}</td>
 		            <td className="width100">{moment(planet.prop("discoveryDate")).format("YYYY-MM-DD")}</td>
+		            <HoverSound />
 		          </tr>
 			        
 			      )}

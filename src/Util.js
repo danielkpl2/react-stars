@@ -1,3 +1,6 @@
+import React from 'react';
+import sound from './mouse-over.wav';
+
 async function getStars(result){
 	var promises = [];
 	result.prop("alternateNames").forEach((value) => {
@@ -42,16 +45,24 @@ async function getAdditionalNames(link){
 }
 
 function tempToRGB(temp, alpha) {
-      if(temp==null) return;
-      var ct = require('color-temperature');
-      var color = ct.colorTemperature2rgb(temp);
-      var red = color.red ? color.red : 0;
-      var green = color.green ? color.green : 0;
-      var blue = color.blue ? color.blue : 0;
-      return "rgba("+red+","+green+","+blue+"," + alpha + ")";
-    }
+  if(temp==null) return;
+  var ct = require('color-temperature');
+  var color = ct.colorTemperature2rgb(temp);
+  var red = color.red ? color.red : 0;
+  var green = color.green ? color.green : 0;
+  var blue = color.blue ? color.blue : 0;
+  return "rgba("+red+","+green+","+blue+"," + alpha + ")";
+}
 
-export { getAdditionalNames, tempToRGB, getStars };
+function HoverSound(){
+	return (
+		<td style={{display: "none"}}><audio type="audio/wav"><source src={sound}></source></audio></td>
+		)
+}
+
+
+
+export { getAdditionalNames, tempToRGB, getStars, HoverSound };
 // module.exports = {
 // 	getStars,
 // 	getAdditionalNames,

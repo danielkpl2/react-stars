@@ -2,9 +2,18 @@ import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import spinner from './spinner.gif';
 import Planets from './Planets.js';
-import { tempToRGB } from './Util.js';
+import { tempToRGB, HoverSound } from './Util.js';
 
 class Star extends Component {
+
+	onMouseEnter(event){
+		event.currentTarget.lastChild.firstElementChild.play().then(() => {
+
+		}).catch(error => {
+			
+		});
+
+	}
 
 	render(){
 		const { currentStar, names } = this.props.context.state;
@@ -19,24 +28,48 @@ class Star extends Component {
               
               <tbody>
                 
-                <tr><td className="list-label">Other names: </td><td>{names.map((name, i) => <span key={i}>{name}{names.length-1 !== i ? ", " : ""}</span>)}</td></tr>
-                <tr><td className="list-label">Radius (km): </td><td>{currentStar.props.radius ? (parseFloat(currentStar.props.radius) * 695510).toFixed(2) : "unknown"}</td></tr>
-                <tr><td className="list-label">Age (billions of years): </td><td>{currentStar.props.age || "unknown"}</td></tr>
-                <tr><td className="list-label">Temperature (kelvin): </td>
-                <td style={{backgroundColor: tempToRGB(currentStar.props.temperature, 0.5)}}>
-                {currentStar.props.temperature ? (<span className="temperature-pill">{currentStar.props.temperature}</span>) : "unknown"}
-                </td></tr>
-                <tr><td className="list-label">Mass (Solar masses): </td><td>{currentStar.props.mass || "unknown"}</td></tr>
-                <tr><td className="list-label">Distance (light years): </td><td>{currentStar.props.distance || "unknown"}</td></tr>
-                <tr><td className="list-label">Number of planets: </td><td>{currentStar.props.numberOfPlanets || "unknown"}</td></tr>
+                <tr onMouseEnter={this.onMouseEnter}>
+                	<td className="list-label">Other names: </td>
+                	<td>{names.map((name, i) => <span key={i}>{name}{names.length-1 !== i ? ", " : ""}</span>)}</td>
+                	<HoverSound />
+                </tr>
+                <tr onMouseEnter={this.onMouseEnter}>
+                	<td className="list-label">Radius (km): </td>
+                	<td>{currentStar.props.radius ? (parseFloat(currentStar.props.radius) * 695510).toFixed(2) : "unknown"}</td>
+                	<HoverSound />
+                </tr>
+                <tr onMouseEnter={this.onMouseEnter}>
+                	<td className="list-label">Age (billions of years): </td>
+                	<td>{currentStar.props.age || "unknown"}</td>
+                	<HoverSound />
+                </tr>
+                <tr onMouseEnter={this.onMouseEnter}>
+                	<td className="list-label">Temperature (kelvin): </td>
+                	<td style={{backgroundColor: tempToRGB(currentStar.props.temperature, 0.5)}}>
+                	{currentStar.props.temperature ? (<span className="temperature-pill">{currentStar.props.temperature}</span>) : "unknown"}
+                	</td>
+                	<HoverSound />
+                	</tr>
+                <tr onMouseEnter={this.onMouseEnter}>
+                	<td className="list-label">Mass (Solar masses): </td>
+                	<td>{currentStar.props.mass || "unknown"}</td>
+                	<HoverSound />
+                </tr>
+                <tr onMouseEnter={this.onMouseEnter}>
+                	<td className="list-label">Distance (light years): </td>
+                	<td>{currentStar.props.distance || "unknown"}</td>
+                	<HoverSound />
+                </tr>
+                <tr onMouseEnter={this.onMouseEnter}>
+                	<td className="list-label">Number of planets: </td>
+                	<td>{currentStar.props.numberOfPlanets || "unknown"}</td>
+                	<HoverSound />
+                </tr>
               </tbody>
             </Table>
             
             <div style={{float: "right"}}>
-            <Planets context={this.props.context} />
-
-            
-            
+            	<Planets context={this.props.context} />
             </div>
           </div>
         </div>
