@@ -5,7 +5,13 @@ import { tempToRGB, HoverSound } from './Util.js';
 
 class Planets extends Component {
 
-	onMouseEnter(event){
+	onMouseEnter(event, key){
+		// var planet = document.getElementById("planet"+key);
+		// var planetPosition = planet.getBoundingClientRect();
+		// console.log(planetPosition);
+		// console.log(event.currentTarget.firstChild);
+		// event.currentTarget.firstChild.style.position = "absolute";
+		// event.currentTarget.firstChild.style.top = planetPosition.top+"px";
 		event.currentTarget.lastChild.firstElementChild.play().then(() => {
 
 		}).catch(error => {
@@ -34,7 +40,7 @@ class Planets extends Component {
 	      	</tr></thead>
 	      	<tbody>
 			      {planets.map((planet, key) => 
-		          <tr onMouseEnter={this.onMouseEnter} key={key}>
+		          <tr onMouseEnter={(event)=>this.onMouseEnter(event, key)} key={key}>
 		            <td className="width100">{planet.prop("name") || "?"}</td>
 		            <td className="width75">{planet.prop("radius") ? (parseFloat(planet.prop("radius")) * 69911).toFixed(2) : "?"}</td>
 		            <td className="width50">{planet.prop("age") || '?'}</td>

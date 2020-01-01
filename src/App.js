@@ -6,7 +6,7 @@ import Star from './Star.js';
 import Orbits from './Orbits.js';
 import spinner from './spinner.gif';
 import { Button } from 'react-bootstrap';
-
+import { resourceURIs } from './Util.js';
 import { getStars, getAdditionalNames } from './Util.js';
 import YouTube from 'react-youtube';
 
@@ -16,6 +16,10 @@ class App extends Component {
     super(props);
     this.state = {
       starResource: null,
+      resourceURI: resourceURIs.stars,
+      page: 1,
+      size: 20,
+      sort: "numberOfPlanets,desc",
       stars: null,
       headings: [],
       loading: true,
@@ -24,7 +28,6 @@ class App extends Component {
       planets: null,
       planetHeadings: [],
       search: "",
-      searchDistance: "",
       searchBy: "name",
       next: null,
       prev: null,
@@ -33,7 +36,6 @@ class App extends Component {
       names: "",
       error: "",
       ready: false,
-      // ready: true,
       yt: null,
       mute: false,
       fullScreen: false,
@@ -41,7 +43,6 @@ class App extends Component {
       loadingSearch: false
 
     }
-    //this.stars_uri = "http://webdevelopertest.playfusionservices.com/webapptest/stars?page=0&size=20";
     
     this.reset = this.reset.bind(this);
     this.handleStarClick = this.handleStarClick.bind(this);
@@ -82,7 +83,6 @@ class App extends Component {
       try{
         const planets = await this.state.stars[key].link("planets").fetch();
         const names = await getAdditionalNames(this.state.stars[key].link("additionalNames"));
-        //console.log(names);
         this.setState({
           currentStar: this.state.stars[key],
           currentStarIndex: key,
@@ -98,8 +98,6 @@ class App extends Component {
         })
       }
     });
-    
-    
   }
 
 
@@ -113,14 +111,21 @@ class App extends Component {
     this.setState({loadingSearch: true}, async () => {
       try {
       const searchResource = await this.client.fetchResource("alternateNames/search");
-      const result = await searchResource.link("findByNameLike").fetch({name: '%' + this.state.search + '%'});
+      const result = await searchResource.link("findByNameLike").fetch({
+        name: '%' + this.state.search + '%',
+        page: parseInt(this.state.page)-1,
+        size: this.state.size,
+        sort: "" //can only be sorted by name
+
+      });
+      console.log(result);
       const stars = await getStars(result);
       const names = stars[0].props.additionalNames;
-      //const names = await getAdditionalNames(stars[0].link("additionalNames"));
       const planets = await stars[0].link("planets").fetch();
 
       this.setState({
           starResource: result,
+          resourceURI: resourceURIs.nameSearch,
           stars: stars,
           currentStar: stars[0],
           currentStarIndex: 0,
@@ -131,8 +136,6 @@ class App extends Component {
           names: names,
           planets: planets.prop("planets"),
           loadingSearch: false
-          //searchResult: true
-
         })
       } catch {
         console.log("Error in search by name");
@@ -142,24 +145,24 @@ class App extends Component {
         })
       }
     });
-
-    
-
   }
 
   async handleSearchByPlanetCount(){
     this.setState({loadingSearch: true}, async () => {
       try{
         const searchResource = await this.client.fetchResource("stars/search");
-
-        const result = await searchResource.link("findByNumberOfPlanetsGreaterThan").fetch({numberOfPlanets: this.state.search, page: 0, size: 20, sort: "numberOfPlanets,asc"});
-
-        //console.log(result);
+        const result = await searchResource.link("findByNumberOfPlanetsGreaterThan").fetch({
+          numberOfPlanets: this.state.search,
+          page: parseInt(this.state.page)-1,
+          size: this.state.size,
+          sort: "numberOfPlanets,asc"
+        });
         const stars = result.prop("stars");
         const names = await getAdditionalNames(stars[0].link("additionalNames"));
         const planets = await stars[0].link("planets").fetch();  
         this.setState({
           starResource: result,
+          resourceURI: resourceURIs.planetCountSearch,
           stars: stars,
           currentStar: stars[0],
           currentStarIndex: 0,
@@ -167,7 +170,6 @@ class App extends Component {
           prev: result.link("prev"),
           first: result.link("first"),
           last: result.link("last"),
-          search: "",
           names: names,
           planets: planets.prop("planets"),
           loadingSearch: false
@@ -181,24 +183,24 @@ class App extends Component {
         })
       }
     });
-    
-    
-
-    
-
   }
 
   async handleSearchByDistance(){
     this.setState({loadingSearch: true}, async () => {
       try{
         const searchResource = await this.client.fetchResource("stars/search");
-        const result = await searchResource.link("findByDistanceLessThanEqualOrderByDistance").fetch({distance: this.state.search, page: 0, size: 20});
+        const result = await searchResource.link("findByDistanceLessThanEqualOrderByDistance").fetch({
+          distance: this.state.search,
+          page: parseInt(this.state.page)-1,
+          size: this.state.size,
+        });
         const stars = result.prop("stars");
         const names = await getAdditionalNames(stars[0].link("additionalNames"));
         const planets = await stars[0].link("planets").fetch();
 
         this.setState({
             starResource: result,
+            resourceURI: resourceURIs.distance,
             stars: stars,
             currentStar: stars[0],
             currentStarIndex: 0,
@@ -206,19 +208,15 @@ class App extends Component {
             prev: result.link("prev"),
             first: result.link("first"),
             last: result.link("last"),
-            search: "",
             names: names,
             planets: planets.prop("planets"),
             loadingSearch: false
-
-
           })
       } catch {
         console.log("Error in search by distance");
         this.setState({
             error: "Error in search by distance",
             loadingSearch: false
-
           })
       }
     });
@@ -226,12 +224,10 @@ class App extends Component {
     
   }
 
-  async reset(){
+  async paginate(){
     this.setState({loadingSearch: true}, async () => {
       try {
-        this.client = createClient("http://webdevelopertest.playfusionservices.com/webapptest", {"headers": {"Access-Control-Allow-Origin": "*"}});
-      
-        const starResource  = await this.client.fetchResource("/stars?page=0&size=20&sort=numberOfPlanets,desc");
+        const starResource = await this.client.fetchResource(this.state.resourceURI+"?page="+(parseInt(this.state.page)-1)+"&size="+this.state.size+"&sort="+this.state.sort);
         const firstStar = starResource.prop("stars")[0];
         const planets = await firstStar.link("planets").fetch();
         const names = await getAdditionalNames(firstStar.link("additionalNames"));
@@ -256,10 +252,59 @@ class App extends Component {
           last: starResource.link("last"),
           names: names,
           error: "",
+          searchBy: "name",
+          loadingSearch: false,
+          page: starResource.prop("page").number+1,
+          size: starResource.prop("page").size
+
+
+        })
+      } catch {
+        console.log("Error at paginate");
+        this.setState({
+            error: "Error at paginate",
+            loadingSearch: false
+          })
+      }
+    });
+  }
+
+  async reset(){
+    this.setState({loadingSearch: true}, async () => {
+      try {
+        this.client = createClient("http://webdevelopertest.playfusionservices.com/webapptest", {"headers": {"Access-Control-Allow-Origin": "*"}});
+      
+        const starResource = await this.client.fetchResource(resourceURIs.stars+"?page="+(parseInt(this.state.page)-1)+"&size="+this.state.size+"&sort="+this.state.sort);
+        const firstStar = starResource.prop("stars")[0];
+        const planets = await firstStar.link("planets").fetch();
+        const names = await getAdditionalNames(firstStar.link("additionalNames"));
+
+        const stars = starResource.prop("stars");
+        
+        const originalHeadings = Object.keys(starResource.prop("stars")[0].props);
+        const planetHeadings = Object.keys(planets.prop("planets")[0].props);
+        const headings = ["name", "distance", "radius", "numberOfPlanets"];
+        this.setState({
+          starResource: starResource,
+          resourceURI: resourceURIs.stars,
+          stars: stars,
+          headings: headings,
+          originalHeadings: originalHeadings,
+          currentStar: firstStar,
+          currentStarIndex: 0,
+          planets: planets.prop("planets"),
+          planetHeadings: planetHeadings,
+          next: starResource.link("next"),
+          prev: starResource.link("prev"),
+          first: starResource.link("first"),
+          last: starResource.link("last"),
+          names: names,
+          error: "",
           search: "",
           searchBy: "name",
-          loadingSearch: false
-
+          loadingSearch: false,
+          page: starResource.prop("page").number+1,
+          size: starResource.prop("page").size
 
         })
       } catch {

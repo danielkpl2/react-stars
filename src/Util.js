@@ -60,9 +60,17 @@ function HoverSound(){
 		)
 }
 
+let resourceURIs = {
+	stars: "stars",
+	nameSearch: "alternateNames/search/findByNameLike",
+	planetCountSearch: "stars/search/findByNumberOfPlanetsGreaterThan",
+	distance: "stars/search/findByDistanceLessThanEqualOrderByDistance"
+
+}
 
 
-export { getAdditionalNames, tempToRGB, getStars, HoverSound };
+
+export { getAdditionalNames, tempToRGB, getStars, HoverSound, resourceURIs };
 // module.exports = {
 // 	getStars,
 // 	getAdditionalNames,

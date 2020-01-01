@@ -64,7 +64,8 @@ h2 {
 
 #stars-table tbody {
   max-height: 70vh;
-  overflow-y: auto;
+  /*overflow-y: auto;*/
+  overflow-y: scroll;
   overflow-x: hidden;
 }
 
@@ -84,7 +85,8 @@ h2 {
 
 #planets-table tbody {
   max-height: 40vh;
-  overflow-y: auto;
+  /*overflow-y: auto;*/
+  overflow-y: scroll;
   overflow-x: hidden; 
 }
 .width300 {
@@ -212,7 +214,6 @@ button {
   height: 10px;
   border-radius: 50%;
   background: silver;
-  animation: circle 6s infinite linear;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -226,7 +227,22 @@ button {
   /*display: none;*/
 }
 
+.pagination-input {
+  width: 40px;
+  background: none;
+  color: white;
+  font-weight: bold;
+  border-top: none;
+  border-right: none;
+  border-bottom: 1px solid white;
+  border-left: none;
+  border-image: initial;
+  margin-left: 5px;
+  text-align: center;
+}
+
 
 
 @keyframes circle { to { transform: rotate(1turn); } }
+
 

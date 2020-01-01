@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
-import { getStars, getAdditionalNames } from './Util.js';
+import { Button, Form } from 'react-bootstrap';
+import { getStars, getAdditionalNames, resourceURIs } from './Util.js';
 
 class Buttons extends Component {
 	constructor(props){
     	super(props);
     	this.handleButton = this.handleButton.bind(this);
 	}
-
-	componentDidMount(){
-
-	}
-
+	
 	async handleButton(button){
 		this.props.context.setState({loadingSearch: true}, async () => {
 			try {
@@ -22,8 +18,6 @@ class Buttons extends Component {
 				} else {
 					stars = result.prop("stars");
 				}
-				//console.log("handle button stars");
-				// console.log(result);
 				const planets = await stars[0].link("planets").fetch();
 				const names = await getAdditionalNames(stars[0].link("additionalNames"));
 				this.props.context.setState({
@@ -34,10 +28,12 @@ class Buttons extends Component {
 					currentStarIndex: 0,
 					planets: planets.prop("planets"),
 					next: result.link("next"),
-				    prev: result.link("prev"),
-				    first: result.link("first"),
-				    last: result.link("last"),
-				    loadingSearch: false
+			    prev: result.link("prev"),
+			    first: result.link("first"),
+			    last: result.link("last"),
+			    loadingSearch: false,
+			    page: result.prop("page").number+1,
+			    size: result.prop("page").size,
 				})
 			} catch {
 				console.log("Error pressing button " + button);
@@ -53,18 +49,14 @@ class Buttons extends Component {
 
 	render(){
 		return(
-			<div>
+			<div className="form-inline" style={{width: "516px"}}>
 			{this.props.context.state.starResource != null ? (
-				<div style={{display: "flex"}}>
-					<Button disabled={this.props.context.state.first == null ? true: false} type="button" onClick={() => this.handleButton("first")}>First</Button>
-					<Button disabled={this.props.context.state.prev == null ? true: false} type="button" onClick={() => this.handleButton("prev")}>Previous</Button>
-					<Button disabled={this.props.context.state.next == null ? true: false} type="button" onClick={() => this.handleButton("next")}>Next</Button>
-					<Button disabled={this.props.context.state.last == null ? true: false} type="button" onClick={() => this.handleButton("last")}>Last</Button>
-					<div style={{textAlign: "center", display: "flex", alignItems: "center", justifyContent: "space-between", width: "220px", fontWeight: "bold"}}>
-						<span style={{margin: "5px"}}>Found: {this.props.context.state.starResource.prop("page").totalElements}</span>
-						<span style={{margin: "5px"}}>Page: {parseInt(this.props.context.state.starResource.prop("page").number)+1}</span>
-						<span style={{margin: "5px"}}>Limit: {this.props.context.state.starResource.prop("page").size}</span>
-					</div>
+				<div style={{display: "flex", width: "100%"}}>
+					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.first == null ? true: false} type="button" onClick={() => this.handleButton("first")}>First</Button>
+					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.prev == null ? true: false} type="button" onClick={() => this.handleButton("prev")}>Back</Button>
+					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.next == null ? true: false} type="button" onClick={() => this.handleButton("next")}>Next</Button>
+					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.last == null ? true: false} type="button" onClick={() => this.handleButton("last")}>Last</Button>
+					
 				</div>
 				) : ''
 			}

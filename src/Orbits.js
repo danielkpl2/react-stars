@@ -27,7 +27,7 @@ class Orbits extends Component {
 					<div id="planets">
 
 						{planets.map((planet, key) => 
-							<div key={key} className="planet" style={{
+							<div id={"planet"+key} key={key} className="planet" style={{
 								marginLeft: 150+50*(key+1)+"px",
 								transformOrigin: -(150+50*(key+1))+"px",
 								animation: "circle " + (10 + Math.random()*12) + "s infinite linear",
@@ -35,7 +35,7 @@ class Orbits extends Component {
 								width: planet.props.radius ? planet.props.radius*69911 / 4000 + "px": "25px",
 								height: planet.props.radius ? planet.props.radius*69911 / 4000 + "px": "25px"
 							 }}>
-							 	
+
 							 </div>	
 							)}
 					</div>

@@ -8,14 +8,14 @@ render(){
 	const { handleSearchBy, handleSearchChange, hangleSearchOptionChange, reset } = this.props.context;
 	const { search, searchBy, error } = this.props.context.state;
 	return(
-		<div>
-		<div className="form-inline">
-			<Form onSubmit={handleSearchBy}>
+		<div className="form-inline" style={{width: "516px"}}>
+		<div style={{width: "100%", textAlign: "left"}}>
+			<Form onSubmit={handleSearchBy} style={{display: "flex"}}>
 	      <Form.Control
 	        name="search"
 	        placeholder="Search By"
 	        type="text"
-	        style={{width: "120px", margin: "5px", "opacity": "0.8"}}
+	        style={{margin: "5px", "opacity": "0.8", flexGrow: "1", width: "100%"}}
 	        value={search}
 	        onChange={handleSearchChange}
 	          >
@@ -24,7 +24,7 @@ render(){
 	      	as="select"
 	      	value={searchBy}
 	      	onChange={hangleSearchOptionChange}
-	      	style={{width: "150px", margin: "5px", "opacity": "0.8"}}
+	      	style={{margin: "5px", "opacity": "0.8", flexGrow: "1", width: "100%"}}
 	      	>
 	        <option value="name">Name</option>
 	        <option value="planet-count">Planet Count</option>
@@ -33,7 +33,7 @@ render(){
 	      <Button
 	        variant="success"
 	        type="submit"
-	        style={{width: "100px"}}
+	        style={{flexGrow: "1", width: "100%"}}
 	        
 	        >
 	        Search
@@ -42,13 +42,13 @@ render(){
 	        variant="success"
 	        type="button"
 	        onClick={reset}
-	        style={{width: "100px"}}
+	        style={{flexGrow: "1", width: "100%"}}
 	        >
 	        Reset
 	      </Button>
 	    </Form>
     </div>
-    <div style={{textAlign: 'left', margin: '5px'}}>{error}</div>
+    	<div style={{textAlign: 'left', margin: '5px'}}>{error}</div>
     </div>
 		)
 }

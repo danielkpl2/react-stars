@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Badge } from 'react-bootstrap';
 import Search from './Search.js';
 import Buttons from './Buttons.js';
+import Pagination from './Pagination.js';
 import spinner from './spinner.gif';
 import { HoverSound } from './Util.js';
 
@@ -37,9 +38,8 @@ class Starlist extends Component {
             <div className="inner-left" id="inner-left">
             <h2 style={{textAlign: "left"}}>Star Systems {loadingSearch ? <img style={{verticalAlign: "text-bottom"}} alt='' src={spinner} height="30" width="30" /> : ''}</h2>
             <Search context={this.props.context} />
-            <div className="form-inline">
-              <Buttons context={this.props.context} />
-            </div>
+            <Buttons context={this.props.context} />
+            <Pagination context={this.props.context} />
           <Table id="stars-table" striped bordered hover variant="dark" style={{width: "516px", borderSpacing: "0"}}>
             <thead>
 
