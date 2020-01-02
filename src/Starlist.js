@@ -28,7 +28,7 @@ class Starlist extends Component {
 	}
 	render(){
 		const { stars, currentStarIndex, loadingSearch } = this.props.context.state;
-		// const columnWidth = typeof stars[0] !== 'undefined' && stars[0].props.additionalNames ? 100 : 125;
+
 		return(
 			<div>
 			{stars != null ? 

@@ -82,15 +82,20 @@ class App extends Component {
   async handleStarClick(key){
     this.setState({loadingSearch: true}, async () => {
       try{
-        const planets = await this.state.stars[key].link("planets").fetch();
-        const names = await getAdditionalNames(this.state.stars[key].link("additionalNames"));
-        this.setState({
-          currentStar: this.state.stars[key],
-          currentStarIndex: key,
-          planets: planets.prop("planets"),
-          names: names,
-          loadingSearch: false
+        const planetsPromise = this.state.stars[key].link("planets").fetch();
+        const namesPromise = getAdditionalNames(this.state.stars[key].link("additionalNames"));
+        Promise.all([planetsPromise, namesPromise]).then(response => {
+          const planets = response[0];
+          const names = response[1];
+          this.setState({
+            currentStar: this.state.stars[key],
+            currentStarIndex: key,
+            planets: planets.prop("planets"),
+            names: names,
+            loadingSearch: false
+          })
         })
+        
       } catch {
         console.log("Error in hangle star click");
         this.setState({
@@ -159,23 +164,28 @@ class App extends Component {
           sort: this.state.sort
         });
         const stars = result.prop("stars");
-        const names = await getAdditionalNames(stars[0].link("additionalNames"));
-        const planets = await stars[0].link("planets").fetch();  
-        this.setState({
-          starResource: result,
-          resourceURI: resourceURIs.planetCountSearch,
-          stars: stars,
-          currentStar: stars[0],
-          currentStarIndex: 0,
-          next: result.link("next"),
-          prev: result.link("prev"),
-          first: result.link("first"),
-          last: result.link("last"),
-          names: names,
-          planets: planets.prop("planets"),
-          loadingSearch: false
+        const namesPromise = getAdditionalNames(stars[0].link("additionalNames"));
+        const planetsPromise = stars[0].link("planets").fetch();  
+        Promise.all([planetsPromise, namesPromise]).then(response => {
+          const planets = response[0];
+          const names = response[1];
+          this.setState({
+            starResource: result,
+            resourceURI: resourceURIs.planetCountSearch,
+            stars: stars,
+            currentStar: stars[0],
+            currentStarIndex: 0,
+            next: result.link("next"),
+            prev: result.link("prev"),
+            first: result.link("first"),
+            last: result.link("last"),
+            names: names,
+            planets: planets.prop("planets"),
+            loadingSearch: false
 
+          })
         })
+        
       } catch {
         console.log("Error in search by planet count");
         this.setState({
@@ -197,10 +207,13 @@ class App extends Component {
           sort: this.state.sort
         });
         const stars = result.prop("stars");
-        const names = await getAdditionalNames(stars[0].link("additionalNames"));
-        const planets = await stars[0].link("planets").fetch();
+        const namesPromise = getAdditionalNames(stars[0].link("additionalNames"));
+        const planetsPromise = stars[0].link("planets").fetch();
 
-        this.setState({
+        Promise.all([planetsPromise, namesPromise]).then(response => {
+          const planets = response[0];
+          const names = response[1];
+          this.setState({
             starResource: result,
             resourceURI: resourceURIs.distance,
             stars: stars,
@@ -214,6 +227,9 @@ class App extends Component {
             planets: planets.prop("planets"),
             loadingSearch: false
           })
+        })
+
+        
       } catch {
         console.log("Error in search by distance");
         this.setState({
@@ -231,36 +247,44 @@ class App extends Component {
       try {
         const starResource = await this.client.fetchResource(this.state.resourceURI+"?page="+(parseInt(this.state.page)-1)+"&size="+this.state.size+"&sort="+this.state.sort);
         const firstStar = starResource.prop("stars")[0];
-        const planets = await firstStar.link("planets").fetch();
-        const names = await getAdditionalNames(firstStar.link("additionalNames"));
-
-        const stars = starResource.prop("stars");
-        
         const originalHeadings = Object.keys(starResource.prop("stars")[0].props);
-        const planetHeadings = Object.keys(planets.prop("planets")[0].props);
         const headings = ["name", "distance", "radius", "numberOfPlanets"];
-        this.setState({
-          starResource: starResource,
-          stars: stars,
-          headings: headings,
-          originalHeadings: originalHeadings,
-          currentStar: firstStar,
-          currentStarIndex: 0,
-          planets: planets.prop("planets"),
-          planetHeadings: planetHeadings,
-          next: starResource.link("next"),
-          prev: starResource.link("prev"),
-          first: starResource.link("first"),
-          last: starResource.link("last"),
-          names: names,
-          error: "",
-          searchBy: "",
-          loadingSearch: false,
-          page: starResource.prop("page").number+1,
-          size: starResource.prop("page").size
+        const planetsPromise = firstStar.link("planets").fetch();
+        const namesPromise =  getAdditionalNames(firstStar.link("additionalNames"));
+        const stars = starResource.prop("stars");
+        Promise.all([planetsPromise, namesPromise]).then(response => {
+          const planets = response[0];
+          const names = response[1];
+          // const planetHeadings = Object.keys(planets.prop("planets")[0].props);
+        
+          this.setState({
+            starResource: starResource,
+            stars: stars,
+            headings: headings,
+            originalHeadings: originalHeadings,
+            currentStar: firstStar,
+            currentStarIndex: 0,
+            planets: planets.prop("planets"),
+            // planetHeadings: planetHeadings,
+            next: starResource.link("next"),
+            prev: starResource.link("prev"),
+            first: starResource.link("first"),
+            last: starResource.link("last"),
+            names: names,
+            error: "",
+            searchBy: "",
+            loadingSearch: false,
+            page: starResource.prop("page").number+1,
+            size: starResource.prop("page").size
 
 
+          })
         })
+
+        
+        
+        
+        
       } catch {
         console.log("Error at paginate");
         this.setState({
@@ -278,37 +302,48 @@ class App extends Component {
       
         const starResource = await this.client.fetchResource(resourceURIs.stars+"?page="+(parseInt(this.state.page)-1)+"&size="+this.state.size+"&sort="+this.state.sort);
         const firstStar = starResource.prop("stars")[0];
-        const planets = await firstStar.link("planets").fetch();
-        const names = await getAdditionalNames(firstStar.link("additionalNames"));
-
         const stars = starResource.prop("stars");
-        
         const originalHeadings = Object.keys(starResource.prop("stars")[0].props);
-        const planetHeadings = Object.keys(planets.prop("planets")[0].props);
         const headings = ["name", "distance", "radius", "numberOfPlanets"];
-        this.setState({
-          starResource: starResource,
-          resourceURI: resourceURIs.stars,
-          stars: stars,
-          headings: headings,
-          originalHeadings: originalHeadings,
-          currentStar: firstStar,
-          currentStarIndex: 0,
-          planets: planets.prop("planets"),
-          planetHeadings: planetHeadings,
-          next: starResource.link("next"),
-          prev: starResource.link("prev"),
-          first: starResource.link("first"),
-          last: starResource.link("last"),
-          names: names,
-          error: "",
-          search: "",
-          searchBy: "",
-          loadingSearch: false,
-          page: starResource.prop("page").number+1,
-          size: starResource.prop("page").size
 
-        })
+        const planetsPromise = firstStar.link("planets").fetch();
+
+        const namesPromise = getAdditionalNames(firstStar.link("additionalNames"));
+
+        Promise.all([planetsPromise, namesPromise]).then(response => {
+          const planets = response[0];
+          const names = response[1];
+          const planetHeadings = Object.keys(planets.prop("planets")[0].props);
+        
+          this.setState({
+            starResource: starResource,
+            resourceURI: resourceURIs.stars,
+            stars: stars,
+            headings: headings,
+            originalHeadings: originalHeadings,
+            currentStar: firstStar,
+            currentStarIndex: 0,
+            planets: planets.prop("planets"),
+            planetHeadings: planetHeadings,
+            next: starResource.link("next"),
+            prev: starResource.link("prev"),
+            first: starResource.link("first"),
+            last: starResource.link("last"),
+            names: names,
+            error: "",
+            search: "",
+            searchBy: "",
+            loadingSearch: false,
+            page: starResource.prop("page").number+1,
+            size: starResource.prop("page").size
+
+          })
+        });
+
+        
+        
+        
+        
       } catch {
         console.log("Error at start up");
         this.setState({
