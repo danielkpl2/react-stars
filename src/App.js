@@ -28,7 +28,7 @@ class App extends Component {
       planets: null,
       planetHeadings: [],
       search: "",
-      searchBy: "name",
+      searchBy: "",
       next: null,
       prev: null,
       first: null,
@@ -67,6 +67,7 @@ class App extends Component {
       case "name": this.handleSearchByName(); break;
       case "planet-count": this.handleSearchByPlanetCount(); break;
       case "distance": this.handleSearchByDistance(); break;
+      case "": this.reset(); break;
       default: break;
     }
 
@@ -115,7 +116,7 @@ class App extends Component {
         name: '%' + this.state.search + '%',
         page: parseInt(this.state.page)-1,
         size: this.state.size,
-        sort: "" //can only be sorted by name
+        sort: this.state.sort //can only be sorted by name
 
       });
       console.log(result);
@@ -155,7 +156,7 @@ class App extends Component {
           numberOfPlanets: this.state.search,
           page: parseInt(this.state.page)-1,
           size: this.state.size,
-          sort: "numberOfPlanets,asc"
+          sort: this.state.sort
         });
         const stars = result.prop("stars");
         const names = await getAdditionalNames(stars[0].link("additionalNames"));
@@ -193,6 +194,7 @@ class App extends Component {
           distance: this.state.search,
           page: parseInt(this.state.page)-1,
           size: this.state.size,
+          sort: this.state.sort
         });
         const stars = result.prop("stars");
         const names = await getAdditionalNames(stars[0].link("additionalNames"));
@@ -252,7 +254,7 @@ class App extends Component {
           last: starResource.link("last"),
           names: names,
           error: "",
-          searchBy: "name",
+          searchBy: "",
           loadingSearch: false,
           page: starResource.prop("page").number+1,
           size: starResource.prop("page").size
@@ -301,7 +303,7 @@ class App extends Component {
           names: names,
           error: "",
           search: "",
-          searchBy: "name",
+          searchBy: "",
           loadingSearch: false,
           page: starResource.prop("page").number+1,
           size: starResource.prop("page").size

@@ -26,6 +26,7 @@ render(){
 	      	onChange={hangleSearchOptionChange}
 	      	style={{margin: "5px", "opacity": "0.8", flexGrow: "1", width: "100%"}}
 	      	>
+	      	<option value="">--</option>
 	        <option value="name">Name</option>
 	        <option value="planet-count">Planet Count</option>
 	        <option value="distance">Distance</option>

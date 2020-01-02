@@ -58,8 +58,8 @@ class Starlist extends Component {
         		{stars.map((value, key) => 
 		          <tr onMouseEnter={this.onMouseEnter} key={key} className={currentStarIndex===key ? "table-active" : ""} onClick={() => this.props.context.handleStarClick(key)}>
 		             {stars[key].props.additionalNames ? <td className="width175">{
-		              value.props.additionalNames.map(name =>
-		                <Badge variant={name === value.props.matchedName ? "success" : "primary"} key={name} style={{marginRight: "2px"}}>{name}</Badge>
+		              value.props.additionalNames.map((name, i) =>
+		                <Badge variant={name === value.props.matchedName ? "success" : "primary"} key={i} style={{marginRight: "2px"}}>{name}</Badge>
 		                )
 		            }</td> : null}
 		             
