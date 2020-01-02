@@ -10,7 +10,7 @@ class Orbits extends Component {
 		const { planets, currentStar } = this.props.context.state;
 
     var starRadius = planets ? currentStar.props.radius : null;
-    if(starRadius > 2) starRadius = 2;
+    if(starRadius > 1.5) starRadius = 1.5;
 		return(
 			<div>
 			{planets ? (
