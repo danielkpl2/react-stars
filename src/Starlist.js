@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Badge } from 'react-bootstrap';
 import Search from './Search.js';
-import Buttons from './Buttons.js';
+import Navigation from './Navigation.js';
 import Pagination from './Pagination.js';
 import spinner from './spinner.gif';
 import { HoverSound } from './Util.js';
@@ -12,13 +12,8 @@ class Starlist extends Component {
 		this.onMouseEnter = this.onMouseEnter.bind(this);
 	}
 
-	// onMouseEnter(event){
 	onMouseEnter(event){
-		//document.getElementById("audio"+key).play();
-		//console.log(audio);
-		// var a = audio.play();
-		//console.log(a);
-		// console.log(event.currentTarget);
+
 		event.currentTarget.lastChild.firstElementChild.play().then(() => {
 
 		}).catch(error => {
@@ -27,7 +22,7 @@ class Starlist extends Component {
 
 	}
 	render(){
-		const { stars, currentStarIndex, loadingSearch } = this.props.context.state;
+		const { stars, currentStarIndex, loadingSearch, error } = this.props.context.state;
 
 		return(
 			<div>
@@ -38,8 +33,11 @@ class Starlist extends Component {
             <div className="inner-left" id="inner-left">
             <h2 style={{textAlign: "left"}}>Star Systems {loadingSearch ? <img style={{verticalAlign: "text-bottom"}} alt='' src={spinner} height="30" width="30" /> : ''}</h2>
             <Search context={this.props.context} />
-            <Buttons context={this.props.context} />
             <Pagination context={this.props.context} />
+            <Navigation context={this.props.context} />
+
+            
+            <div style={{textAlign: 'left', margin: '5px'}}>{error}</div>
           <Table id="stars-table" striped bordered hover variant="dark" style={{width: "516px", borderSpacing: "0"}}>
             <thead>
 

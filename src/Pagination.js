@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Form } from 'react-bootstrap';
-import { getStars, getAdditionalNames, resourceURIs, sortOptions } from './Util.js';
+import { Form, Button } from 'react-bootstrap';
+import { resourceURIs } from './Util.js';
 
 class Pagination extends Component {
 	constructor(props){
@@ -8,11 +8,7 @@ class Pagination extends Component {
     	this.handlePageChange = this.handlePageChange.bind(this);
     	this.handleSubmit = this.handleSubmit.bind(this);
     	this.handleSizeChange = this.handleSizeChange.bind(this);
-    	this.handleSortChange = this.handleSortChange.bind(this);
-    	// this.handleSizeSubmit = this.handleSizeSubmit.bind(this);
 	}
-
-	
 
 	handlePageChange(event){
 		this.props.context.setState({
@@ -37,30 +33,11 @@ class Pagination extends Component {
     })
 	}
 
-	handleSortChange(event){
-		
-		this.props.context.setState({
-      sort: event.target.value
-    })	
-	}
-
 	render(){
-		var options = [];
-		
-		switch(this.props.context.state.searchBy){
-			case "": options = sortOptions; break;
-			case "planet-count": options = sortOptions; break;
-			case "distance": options = sortOptions; break;
-			case "name" : options = [
-					{"name": "Name Descending", "value": "name,desc"},
-					{"name": "Name Ascending", "value": "name,asc"},
-			]; break;
-		}
-
 		return(
 			<div style={{textAlign: "center", display: "flex", alignItems: "center", justifyContent: "space-between", width: "516px", fontWeight: "bold"}}>
-				<span style={{margin: "auto", flexGrow: "1", width: "100%"}}>Found: {this.props.context.state.starResource.prop("page").totalElements}</span>
-				<span style={{margin: "auto", flexGrow: "1", width: "100%"}}>
+				<span style={{margin: "5px", width: "25%"}}>Found: {this.props.context.state.starResource.prop("page").totalElements}</span>
+				<span style={{margin: "5px", width: "25%"}}>
 					Page: 
 					<Form onSubmit={this.handleSubmit} style={{display: "inline-block"}}>
 						<input
@@ -72,7 +49,7 @@ class Pagination extends Component {
 							></input>
 					</Form>
 				</span>
-				<span style={{margin: "auto", flexGrow: "1", width: "100%"}}>
+				<span style={{margin: "5px", width: "25%"}}>
 					<span>Limit: <Form onSubmit={this.handleSubmit} style={{display: "inline-block"}}>
 						<input
 							className="pagination-input"
@@ -82,18 +59,17 @@ class Pagination extends Component {
 					</Form></span>
 					
 				</span>
-				<span style={{margin: "auto", opacity: "0.8", flexGrow: "1", width: "100%"}}>
-					 <Form.Control 
-	      		as="select"
-	      		onChange={this.handleSortChange}
-	      		value={this.props.context.state.sort}
-	      		style={{margin: "auto", opacity: "0.8", flexGrow: "1", width: "100%"}}>
-	      		>
-	      			{options.map((option, key) => 
-	      				<option key={key} value={option.value}>{option.name}</option>
-	      			)}
-	      			
-	      		</Form.Control>
+				<span style={{margin: "5px", width: "25%"}}>
+					<Button
+		        variant="success"
+		        type="button"
+		        style={{margin: "0px", width: "100%"}}
+		        onClick={this.props.context.handleSearchBy}
+		        
+		        >
+		        Search
+		      </Button>
+					 
 				</span>
 			</div>
 			)

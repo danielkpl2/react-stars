@@ -46,14 +46,12 @@ class App extends Component {
     
     this.reset = this.reset.bind(this);
     this.handleStarClick = this.handleStarClick.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearchByName = this.handleSearchByName.bind(this);
     this.handleSearchByPlanetCount = this.handleSearchByPlanetCount.bind(this);
     this.handleSearchByDistance = this.handleSearchByDistance.bind(this);
-    this.hangleSearchOptionChange = this.hangleSearchOptionChange.bind(this);
     this.handleSearchBy = this.handleSearchBy.bind(this);
-    this._onPlay = this._onPlay.bind(this);
-    this._onReady = this._onReady.bind(this);
+    this.onPlay = this.onPlay.bind(this);
+    this.onReady = this.onReady.bind(this);
     this.mute = this.mute.bind(this);
     this.fullScreen = this.fullScreen.bind(this);
     this.noVideo = this.noVideo.bind(this);
@@ -73,11 +71,7 @@ class App extends Component {
 
   }
 
-  hangleSearchOptionChange(event){
-    this.setState({
-      searchBy: event.target.value
-    })
-  }
+  
 
   async handleStarClick(key){
     this.setState({loadingSearch: true}, async () => {
@@ -97,9 +91,9 @@ class App extends Component {
         })
         
       } catch {
-        console.log("Error in hangle star click");
+        console.log("Error in handle star click");
         this.setState({
-          error: "Error in hangle star click",
+          error: "Error in handle star click",
           loadingSearch: false
         })
       }
@@ -107,11 +101,7 @@ class App extends Component {
   }
 
 
-  handleSearchChange(event){
-    this.setState({
-      search: event.target.value
-    })
-  }
+  
 
   async handleSearchByName(){
     this.setState({loadingSearch: true}, async () => {
@@ -281,9 +271,7 @@ class App extends Component {
           })
         })
 
-        
-        
-        
+ 
         
       } catch {
         console.log("Error at paginate");
@@ -407,11 +395,11 @@ class App extends Component {
     }
   }
 
-  _onReady(event) {
+  onReady(event) {
     event.target.setVolume(10);
     this.setState({yt: event.target})
   }
-  _onPlay(event) {
+  onPlay(event) {
     this.setState({ready: true});
   }
 
@@ -490,8 +478,8 @@ class App extends Component {
           <YouTube
             videoId="bZNFRIwlQxQ"
             opts={opts}
-            onReady={this._onReady} 
-            onPlay={this._onPlay}
+            onReady={this.onReady} 
+            onPlay={this.onPlay}
             className="video-wrapper"
 
 

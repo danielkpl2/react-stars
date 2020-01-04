@@ -1,7 +1,6 @@
 
 //animation: https://codepen.io/ogab/pen/rjVZQj
 import React, { Component } from 'react';
-//import ct from "color-temperature";
 import { tempToRGB } from './Util.js';
 
 class Orbits extends Component {

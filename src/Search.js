@@ -1,12 +1,55 @@
 import React, { Component } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { sortOptions } from './Util.js';
 
 
 class Search extends Component {
 
+	constructor(props){
+		super(props);
+		this.handleSortChange = this.handleSortChange.bind(this);
+		this.handleSearchChange = this.handleSearchChange.bind(this);
+		this.hangleSearchOptionChange = this.hangleSearchOptionChange.bind(this);
+	}
+
+	handleSearchChange(event){
+    this.props.context.setState({
+      search: event.target.value
+    })
+  }
+
+  hangleSearchOptionChange(event){
+    this.props.context.setState({
+      searchBy: event.target.value
+    })
+  }
+
+
+handleSortChange(event){
+		
+		this.props.context.setState({
+      sort: event.target.value
+    })	
+	}
+
 render(){
-	const { handleSearchBy, handleSearchChange, hangleSearchOptionChange, reset } = this.props.context;
-	const { search, searchBy, error } = this.props.context.state;
+	const { handleSearchBy } = this.props.context;
+	const { search, searchBy } = this.props.context.state;
+
+	var options = [];
+		
+	switch(this.props.context.state.searchBy){
+		case "": options = sortOptions; break;
+		case "planet-count": options = sortOptions; break;
+		case "distance": options = sortOptions; break;
+		case "name" : options = [
+				{"name": "Name ↓", "value": "name,desc"},
+				{"name": "Name ↑", "value": "name,asc"},
+		]; break;
+		default: options = sortOptions; break;
+	}
+
+
 	return(
 		<div className="form-inline" style={{width: "516px"}}>
 		<div style={{width: "100%", textAlign: "left"}}>
@@ -15,41 +58,37 @@ render(){
 	        name="search"
 	        placeholder="Search By"
 	        type="text"
-	        style={{margin: "5px", "opacity": "0.8", flexGrow: "1", width: "100%"}}
+	        style={{margin: "5px", "opacity": "0.8", width: "119px"}}
 	        value={search}
-	        onChange={handleSearchChange}
+	        onChange={this.handleSearchChange}
 	          >
 	      </Form.Control>
 	      <Form.Control 
 	      	as="select"
 	      	value={searchBy}
-	      	onChange={hangleSearchOptionChange}
-	      	style={{margin: "5px", "opacity": "0.8", flexGrow: "1", width: "100%"}}
+	      	onChange={this.hangleSearchOptionChange}
+	      	style={{margin: "5px", "opacity": "0.8", width: "119px"}}
 	      	>
 	      	<option value="">--</option>
 	        <option value="name">Name</option>
-	        <option value="planet-count">Planet Count</option>
+	        <option value="planet-count">Planet No.</option>
 	        <option value="distance">Distance</option>
 	      </Form.Control>
-	      <Button
-	        variant="success"
-	        type="submit"
-	        style={{flexGrow: "1", width: "100%"}}
-	        
-	        >
-	        Search
-	      </Button>
-	      <Button
-	        variant="success"
-	        type="button"
-	        onClick={reset}
-	        style={{flexGrow: "1", width: "100%"}}
-	        >
-	        Reset
-	      </Button>
+	      <Form.Control 
+      		as="select"
+      		onChange={this.handleSortChange}
+      		value={this.props.context.state.sort}
+      		style={{margin: "5px", opacity: "0.8", width: "50%"}}>
+      		>
+      			{options.map((option, key) => 
+      				<option key={key} value={option.value}>{option.name}</option>
+      			)}
+      			
+      		</Form.Control>
+	      
 	    </Form>
     </div>
-    	<div style={{textAlign: 'left', margin: '5px'}}>{error}</div>
+    	
     </div>
 		)
 }

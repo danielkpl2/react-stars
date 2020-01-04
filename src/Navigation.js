@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { getStars, getAdditionalNames, resourceURIs } from './Util.js';
+import { Button } from 'react-bootstrap';
+import { getStars, getAdditionalNames } from './Util.js';
 
-class Buttons extends Component {
+class Navigation extends Component {
 	constructor(props){
     	super(props);
     	this.handleButton = this.handleButton.bind(this);
@@ -52,10 +52,10 @@ class Buttons extends Component {
 			<div className="form-inline" style={{width: "516px"}}>
 			{this.props.context.state.starResource != null ? (
 				<div style={{display: "flex", width: "100%"}}>
-					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.first == null ? true: false} type="button" onClick={() => this.handleButton("first")}>First</Button>
-					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.prev == null ? true: false} type="button" onClick={() => this.handleButton("prev")}>Back</Button>
-					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.next == null ? true: false} type="button" onClick={() => this.handleButton("next")}>Next</Button>
-					<Button style={{flexGrow: "1"}} disabled={this.props.context.state.last == null ? true: false} type="button" onClick={() => this.handleButton("last")}>Last</Button>
+					<Button style={{width: "25%"}} disabled={this.props.context.state.first == null ? true: false} type="button" onClick={() => this.handleButton("first")}>First</Button>
+					<Button style={{width: "25%"}} disabled={this.props.context.state.prev == null ? true: false} type="button" onClick={() => this.handleButton("prev")}>Back</Button>
+					<Button style={{width: "25%"}} disabled={this.props.context.state.next == null ? true: false} type="button" onClick={() => this.handleButton("next")}>Next</Button>
+					<Button style={{width: "25%"}} disabled={this.props.context.state.last == null ? true: false} type="button" onClick={() => this.handleButton("last")}>Last</Button>
 					
 				</div>
 				) : ''
@@ -65,4 +65,4 @@ class Buttons extends Component {
 	}
 }
 
-export default Buttons;
+export default Navigation;

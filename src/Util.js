@@ -69,27 +69,20 @@ let resourceURIs = {
 }
 
 let sortOptions = [
-	{"name": "Name Descending", "value": "name,desc"},
-	{"name": "Name Ascending", "value": "name,asc"},
-	{"name": "Radius Descending", "value": "radius,desc"},
-	{"name": "Radius Ascending", "value": "radius,asc"},
-	{"name": "Age Descending", "value": "age,desc"},
-	{"name": "Age Ascending", "value": "age,asc"},
-	{"name": "Temperature Descending", "value": "temperature,desc"},
-	{"name": "Temperature Ascending", "value": "temperature,asc"},
-	{"name": "Mass Descending", "value": "mass,desc"},
-	{"name": "Mass Ascending", "value": "mass,asc"},
-	{"name": "Distance Descending", "value": "distance,desc"},
-	{"name": "Distance Ascending", "value": "distance,asc"},
-	{"name": "Number of Planets Descending", "value": "numberOfPlanets,desc"},
-	{"name": "Number of Planets Ascending", "value": "numberOfPlanets,asc"},
+	{"name": "Name ↓", "value": "name,desc"},
+	{"name": "Name ↑", "value": "name,asc"},
+	{"name": "Radius ↓", "value": "radius,desc"},
+	{"name": "Radius ↑", "value": "radius,asc"},
+	{"name": "Age ↓", "value": "age,desc"},
+	{"name": "Age ↑", "value": "age,asc"},
+	{"name": "Temperature ↓", "value": "temperature,desc"},
+	{"name": "Temperature ↑", "value": "temperature,asc"},
+	{"name": "Mass ↓", "value": "mass,desc"},
+	{"name": "Mass ↑", "value": "mass,asc"},
+	{"name": "Distance ↓", "value": "distance,desc"},
+	{"name": "Distance ↑", "value": "distance,asc"},
+	{"name": "Number of Planets ↓", "value": "numberOfPlanets,desc"},
+	{"name": "Number of Planets ↑", "value": "numberOfPlanets,asc"},
 ]
 
-
-
 export { getAdditionalNames, tempToRGB, getStars, HoverSound, resourceURIs, sortOptions };
-// module.exports = {
-// 	getStars,
-// 	getAdditionalNames,
-// 	tempToRGB
-// }

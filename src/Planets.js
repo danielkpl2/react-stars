@@ -6,12 +6,7 @@ import { tempToRGB, HoverSound } from './Util.js';
 class Planets extends Component {
 
 	onMouseEnter(event, key){
-		// var planet = document.getElementById("planet"+key);
-		// var planetPosition = planet.getBoundingClientRect();
-		// console.log(planetPosition);
-		// console.log(event.currentTarget.firstChild);
-		// event.currentTarget.firstChild.style.position = "absolute";
-		// event.currentTarget.firstChild.style.top = planetPosition.top+"px";
+
 		event.currentTarget.lastChild.firstElementChild.play().then(() => {
 
 		}).catch(error => {
