@@ -39,6 +39,7 @@ h2 {
  .wrapper #inner-right { 
   transform: rotateY(var(--rightvar)) rotateX(var(--offsetscaledY));
   margin-right: var(--rightoffset);
+  display: inline-block;
  }
 
 
