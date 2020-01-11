@@ -32,7 +32,8 @@ class Orbits extends Component {
 								animation: "circle " + (10 + Math.random()*12) + "s infinite linear",
 								backgroundColor: tempToRGB(planet.props.temperature, 0.7),
 								width: planet.props.radius ? planet.props.radius*69911 / 4000 + "px": "25px",
-								height: planet.props.radius ? planet.props.radius*69911 / 4000 + "px": "25px"
+								height: planet.props.radius ? planet.props.radius*69911 / 4000 + "px": "25px",
+								marginTop: planet.props.radius ? -planet.props.radius*69911 / 4000 / 2 + "px": "-12.5px"
 							 }}>
 
 							 </div>	

@@ -7,19 +7,19 @@ async function getStars(result){
       promises.push(value.link("star").fetch());
     })
 
-    return await Promise.all(promises).then( async stars => {
+    return Promise.all(promises).then(stars => {
       stars.forEach((star, index) => {
         stars[index].props.matchedName = result.prop("alternateNames")[index].prop("name");
       })
       return stars;
       
-    }).then( async stars => {
+    }).then(stars => {
       var promises = [];
       stars.forEach(star => {
         promises.push(star.link("additionalNames").fetch());
       })
 
-	    return await Promise.all(promises).then(namesArray => {
+	    return Promise.all(promises).then(namesArray => {
 	      namesArray.forEach((names, namesIndex) => {
 	        var namesToAdd = [];
 	        names.prop("alternateNames").forEach(name => { 
