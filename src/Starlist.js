@@ -32,15 +32,15 @@ class Starlist extends Component {
 						<div className="wrapper-left">
 							<div className="inner-left" id="inner-left">
 								<h2 style={{ textAlign: "left" }}>Star Systems {loadingSearch ? <img style={{ verticalAlign: "text-bottom" }} alt='' src={spinner} height="30" width="30" /> : ''}</h2>
-								<Search context={this.props.context} handleSearchBy={this.props.handleSearchBy} />
+								<Search handleSearchBy={this.props.handleSearchBy} />
 								<Pagination
 									handleSearchByName={this.props.handleSearchByName}
 									paginate={this.props.paginate}
 									handleSearchByPlanetCount={this.props.handleSearchByPlanetCount}
 									handleSearchByDistance={this.props.handleSearchByDistance}
 									handleSearchBy={this.props.handleSearchBy}
-									context={this.props.context} />
-								<Navigation context={this.props.context} />
+								 />
+								<Navigation />
 								<div style={{ textAlign: 'left', margin: '5px' }}>{error}</div>
 								<Table id="stars-table" striped bordered hover variant="dark" style={{ width: "516px", borderSpacing: "0" }}>
 									<thead>

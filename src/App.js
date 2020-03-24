@@ -348,6 +348,7 @@ class App extends Component {
   onReady(event) {
     event.target.setVolume(10);
     this.props.saveYouTube(event.target);
+
   }
   onPlay(event) {
     this.props.setReady(true);
@@ -435,7 +436,6 @@ class App extends Component {
               <div className="row">
                 <div className="col-sm" style={{ "padding": "60px", paddingTop: "0px" }}>
                   <Starlist
-                    context={this}
                     handleSearchBy={this.handleSearchBy}
                     handleStarClick={this.handleStarClick}
                     handleSearchByName={this.handleSearchByName}
@@ -445,11 +445,11 @@ class App extends Component {
                     />
                 </div>
                 <div className="col-sm" style={{ "padding": "60px", paddingTop: "0px", "textAlign": "left" }}>
-                  <Star context={this} />
+                  <Star />
                 </div>
               </div>
 
-              <Orbits context={this} />
+              <Orbits />
             </div>
           ) : (
               <div className="loading">

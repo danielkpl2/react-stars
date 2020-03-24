@@ -19,16 +19,13 @@ class Navigation extends Component {
     this.handleButton = this.handleButton.bind(this);
   }
   onMouseEnter(event) {
-    // console.log(event.currentTarget);
     if(!event.currentTarget.disabled){
       event.currentTarget.lastChild.play().then(() => {
-
     }).catch(error => {
 
     });
     }
     
-
   }
 
   async handleButton(button) {
