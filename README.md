@@ -1,5 +1,7 @@
 Demo: [https://danielkpl2.github.io/react-stars/](https://danielkpl2.github.io/react-stars/)
 
+Video on LinkedIn: [https://www.linkedin.com/posts/danielkasprowicz_i-made-this-demo-httpslnkdind-ezcwn-activity-6648215751587057664-Zl7M](https://www.linkedin.com/posts/danielkasprowicz_i-made-this-demo-httpslnkdind-ezcwn-activity-6648215751587057664-Zl7M)
+
 ![screenshot](react-stars-screenshot2.png)
 
 ![screenshot](react-stars-screenshot3.png)
