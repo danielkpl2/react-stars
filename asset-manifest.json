@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/react-stars/static/css/main.ff9d9580.chunk.css",
-    "main.js": "/react-stars/static/js/main.562e2a1a.chunk.js",
-    "main.js.map": "/react-stars/static/js/main.562e2a1a.chunk.js.map",
-    "runtime-main.js": "/react-stars/static/js/runtime-main.2c472f5a.js",
-    "runtime-main.js.map": "/react-stars/static/js/runtime-main.2c472f5a.js.map",
-    "static/js/2.1d200981.chunk.js": "/react-stars/static/js/2.1d200981.chunk.js",
-    "static/js/2.1d200981.chunk.js.map": "/react-stars/static/js/2.1d200981.chunk.js.map",
+    "main.css": "/react-stars/static/css/main.665c9806.chunk.css",
+    "main.js": "/react-stars/static/js/main.894bc551.chunk.js",
+    "main.js.map": "/react-stars/static/js/main.894bc551.chunk.js.map",
+    "runtime-main.js": "/react-stars/static/js/runtime-main.ab0cceff.js",
+    "runtime-main.js.map": "/react-stars/static/js/runtime-main.ab0cceff.js.map",
+    "static/js/2.095b9088.chunk.js": "/react-stars/static/js/2.095b9088.chunk.js",
+    "static/js/2.095b9088.chunk.js.map": "/react-stars/static/js/2.095b9088.chunk.js.map",
     "index.html": "/react-stars/index.html",
-    "precache-manifest.67a78b2a709a4e17a10b72bd96825fa0.js": "/react-stars/precache-manifest.67a78b2a709a4e17a10b72bd96825fa0.js",
+    "precache-manifest.2c93a19a448491ed8e957188b45ad474.js": "/react-stars/precache-manifest.2c93a19a448491ed8e957188b45ad474.js",
     "service-worker.js": "/react-stars/service-worker.js",
-    "static/css/main.ff9d9580.chunk.css.map": "/react-stars/static/css/main.ff9d9580.chunk.css.map",
-    "static/js/2.1d200981.chunk.js.LICENSE": "/react-stars/static/js/2.1d200981.chunk.js.LICENSE",
+    "static/css/main.665c9806.chunk.css.map": "/react-stars/static/css/main.665c9806.chunk.css.map",
+    "static/js/2.095b9088.chunk.js.LICENSE": "/react-stars/static/js/2.095b9088.chunk.js.LICENSE",
     "static/media/App.scss": "/react-stars/static/media/milkyway.bdec0e43.jpg",
     "static/media/mouse-over.wav": "/react-stars/static/media/mouse-over.dd1e3047.wav",
     "static/media/index.scss": "/react-stars/static/media/spaceage.faa23d4a.otf",
     "static/media/spinner.gif": "/react-stars/static/media/spinner.95eeac79.gif"
   },
   "entrypoints": [
-    "static/js/runtime-main.2c472f5a.js",
-    "static/js/2.1d200981.chunk.js",
-    "static/css/main.ff9d9580.chunk.css",
-    "static/js/main.562e2a1a.chunk.js"
+    "static/js/runtime-main.ab0cceff.js",
+    "static/js/2.095b9088.chunk.js",
+    "static/css/main.665c9806.chunk.css",
+    "static/js/main.894bc551.chunk.js"
   ]
 }
